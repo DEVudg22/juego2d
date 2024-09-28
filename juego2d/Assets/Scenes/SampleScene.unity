@@ -178,7 +178,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: a7507d69c6bd050428e80846db7d38b8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1038,6 +1038,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   JumpForce: 500
   speed: 7
+  DisparoGarra: {fileID: 8626831170079659346, guid: 44535e78353a71a4aa1a14882dca9d5d, type: 3}
 --- !u!95 &1608906704
 Animator:
   serializedVersion: 5

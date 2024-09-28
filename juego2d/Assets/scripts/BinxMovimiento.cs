@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class BinxMovimiento : MonoBehaviour
 {
+    
     public float JumpForce;
     public float speed;
+    public GameObject DisparoGarra;
+    
 
     private Rigidbody2D Rigidbody2D;
     private Animator Animator;
@@ -41,11 +44,25 @@ public class BinxMovimiento : MonoBehaviour
         {
             Jump();
         }
+
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            Shoot();
+        }
     }
 
     private void Jump()
     {
         Rigidbody2D.AddForce(Vector2.up * JumpForce);
+    }
+
+    private void Shoot()
+    {
+        Vector3 direction;
+        if(transform.localScale.x == 1.0f) direction = Vector2.right;
+        else direction = Vector2.left;
+        DisparoGarra = Instantiate(DisparoGarra, transform.position + direction * 0.1f, Quaternion.identity);
+        DisparoGarra.GetComponent<DisparoScript>().SetDirection(direction);
     }
 
     private void FixedUpdate()
