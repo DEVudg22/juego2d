@@ -23,4 +23,35 @@ public class DisparoScript : MonoBehaviour
     {
         Direction = direction;
     }
+
+    public void CreateBullet()
+    {
+        Instantiate(gameObject);
+    }
+
+    private void DestroyBullet()
+    {
+        Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) 
+    {
+        BinxMovimiento Binx = collision.collider.GetComponent<BinxMovimiento>();
+        HikariSoldierScript HikariSoldier = collision.collider.GetComponent<HikariSoldierScript>();
+        
+        if(Binx != null)
+        {
+            Binx.Hit();
+        }
+
+        if(HikariSoldier != null)
+        {
+            HikariSoldier.Hit();
+        }
+        
+       //DestroyBullet();
+        
+        
+        
+    }
 }

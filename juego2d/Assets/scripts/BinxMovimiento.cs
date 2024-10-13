@@ -14,6 +14,8 @@ public class BinxMovimiento : MonoBehaviour
     private Animator Animator;
     private float Horizontal;
     private bool Grounded;
+    private int health = 1;
+    private float LastShoot;
     
     void Start()
     {
@@ -33,7 +35,7 @@ public class BinxMovimiento : MonoBehaviour
 
         Animator.SetBool("caminando", Horizontal != 0.0f);
 
-        Debug.DrawRay(transform.position, Vector2.down * 0.1f, Color.red);
+        Debug.DrawRay(transform.position, Vector2.down * 1.0f, Color.red);
         if (Physics2D.Raycast(transform.position, Vector2.down, 0.1f))
         {
             Grounded = true;
@@ -45,9 +47,10 @@ public class BinxMovimiento : MonoBehaviour
             Jump();
         }
 
-        if(Input.GetKeyDown(KeyCode.Z))
+        if(Input.GetKeyDown(KeyCode.Z) && Time.time > LastShoot + 0.25f)
         {
             Shoot();
+            LastShoot = Time.time;
         }
     }
 
@@ -61,8 +64,18 @@ public class BinxMovimiento : MonoBehaviour
         Vector3 direction;
         if(transform.localScale.x == 1.0f) direction = Vector2.right;
         else direction = Vector2.left;
-        DisparoGarra = Instantiate(DisparoGarra, transform.position + direction * 0.1f, Quaternion.identity);
+        DisparoGarra = Instantiate(DisparoGarra, transform.position + direction * 1.5f, Quaternion.identity);
         DisparoGarra.GetComponent<DisparoScript>().SetDirection(direction);
+
+    }
+
+    public void Hit()
+    {
+        health--;
+        if(health == 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void FixedUpdate()
