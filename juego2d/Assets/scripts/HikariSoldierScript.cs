@@ -9,6 +9,7 @@ public class HikariSoldierScript : MonoBehaviour
 
    private float LastShoot;
    private int health = 3;
+    private List<GameObject> pool = new List<GameObject>();
 
    private void Update()
    {
@@ -31,15 +32,11 @@ public class HikariSoldierScript : MonoBehaviour
    }
 
    private void Shoot()
-	   {
-		   Vector3 direction;
-		   if(transform.localScale.x == 1.0f) direction = Vector2.right;
-		   else direction = Vector2.left;
-
-		   bullet = Instantiate(bullet, transform.position + direction * 1.5f, Quaternion.identity);
-		   bullet.GetComponent<DisparoScript>().SetDirection(direction);
-		  
-	   }
+    {
+        
+        getBala();
+        
+    }
 
 	   public void Hit()
     {
@@ -48,5 +45,32 @@ public class HikariSoldierScript : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+	 public GameObject getBala()
+    
+    {
+        Vector3 direction;
+        
+        for(int i=0; i<pool.Count; i++)
+        {
+            if(!pool[i].activeInHierarchy)
+            {
+                if(transform.localScale.x == 1.0f) direction = Vector2.right;
+                else direction = Vector2.left;
+                pool[i].transform.position = transform.position + direction * 1.5f;
+                pool[i].GetComponent<DisparoScript>().SetDirection(direction);
+                
+                pool[i].SetActive(true);
+                return pool[i];
+            }
+        }
+        if(transform.localScale.x == 1.0f) direction = Vector2.right;
+        else direction = Vector2.left;
+        GameObject obj = Instantiate(bullet, transform.position + direction *1.5f, Quaternion.identity) as GameObject;
+        obj.GetComponent<DisparoScript>().SetDirection(direction);
+        pool.Add(obj);
+        return obj;
+      
     }
 }

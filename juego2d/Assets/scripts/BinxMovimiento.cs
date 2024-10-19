@@ -16,6 +16,7 @@ public class BinxMovimiento : MonoBehaviour
     private bool Grounded;
     private int health = 1;
     private float LastShoot;
+    private List<GameObject> pool = new List<GameObject>();
     
     void Start()
     {
@@ -61,14 +62,12 @@ public class BinxMovimiento : MonoBehaviour
 
     private void Shoot()
     {
-        Vector3 direction;
-        if(transform.localScale.x == 1.0f) direction = Vector2.right;
-        else direction = Vector2.left;
-        DisparoGarra = Instantiate(DisparoGarra, transform.position + direction * 1.5f, Quaternion.identity);
-        DisparoGarra.GetComponent<DisparoScript>().SetDirection(direction);
-
+        
+        getBala();
+        
     }
 
+    
     public void Hit()
     {
         health--;
@@ -77,6 +76,34 @@ public class BinxMovimiento : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    public GameObject getBala()
+    
+    {
+        Vector3 direction;
+        
+        for(int i=0; i<pool.Count; i++)
+        {
+            if(!pool[i].activeInHierarchy)
+            {
+                if(transform.localScale.x == 1.0f) direction = Vector2.right;
+                else direction = Vector2.left;
+                pool[i].transform.position = transform.position + direction * 1.5f;
+                pool[i].GetComponent<DisparoScript>().SetDirection(direction);
+                
+                pool[i].SetActive(true);
+                return pool[i];
+            }
+        }
+        if(transform.localScale.x == 1.0f) direction = Vector2.right;
+        else direction = Vector2.left;
+        GameObject obj = Instantiate(DisparoGarra, transform.position + direction *1.5f, Quaternion.identity) as GameObject;
+        obj.GetComponent<DisparoScript>().SetDirection(direction);
+        pool.Add(obj);
+        return obj;
+      
+    }
+
 
     private void FixedUpdate()
     {

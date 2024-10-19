@@ -7,16 +7,25 @@ public class DisparoScript : MonoBehaviour
     public float Speed;
     private Rigidbody2D Rigidbody2D;
     private Vector2 Direction;
+
+    
     
     void Start()
     {
         Rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
+    void update()
+    {
+        
+    }
+
     
     private void FixedUpdate()
     {
         Rigidbody2D.velocity = Direction * Speed;
+       
+       
     }
 
     public void SetDirection(Vector2 direction)
@@ -24,34 +33,34 @@ public class DisparoScript : MonoBehaviour
         Direction = direction;
     }
 
-    public void CreateBullet()
-    {
-        Instantiate(gameObject);
-    }
 
-    private void DestroyBullet()
+    void OnTriggerEnter2D(Collider2D collision) 
     {
-        Destroy(gameObject);
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision) 
-    {
-        BinxMovimiento Binx = collision.collider.GetComponent<BinxMovimiento>();
-        HikariSoldierScript HikariSoldier = collision.collider.GetComponent<HikariSoldierScript>();
+        BinxMovimiento Binx = collision.GetComponent<BinxMovimiento>();
+        HikariSoldierScript HikariSoldier = collision.GetComponent<HikariSoldierScript>();
         
         if(Binx != null)
         {
             Binx.Hit();
+            gameObject.SetActive(false);
+            
+            
+           
         }
 
         if(HikariSoldier != null)
         {
             HikariSoldier.Hit();
+            gameObject.SetActive(false);
+            
         }
+
         
-       //DestroyBullet();
-        
-        
+       
         
     }
+
+  
+
+
 }
